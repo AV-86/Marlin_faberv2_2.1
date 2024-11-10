@@ -59,6 +59,7 @@ int8_t libServo::attach(const int pin) {
   if (pin > 0) servo_pin = pin;
   auto result = stm32_servo.attach(servo_pin);
   fixServoTimerInterruptPriority();
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_SET);
   return result;
 }
 
@@ -67,14 +68,17 @@ int8_t libServo::attach(const int pin, const int min, const int max) {
   if (pin > 0) servo_pin = pin;
   auto result = stm32_servo.attach(servo_pin, min, max);
   fixServoTimerInterruptPriority();
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_SET);
   return result;
 }
 
 void libServo::move(const int value) {
   if (attach(0) >= 0) {
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_SET);
     stm32_servo.write(value);
     safe_delay(delay);
     TERN_(DEACTIVATE_SERVOS_AFTER_MOVE, detach());
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_RESET);
   }
 }
 

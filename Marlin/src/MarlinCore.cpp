@@ -1691,6 +1691,16 @@ void setup() {
     for (uint8_t i = 0; i < COUNT(tune) - 1; i += 2) BUZZ(tune[i + 1], tune[i]);
   #endif
 
+  GPIO_InitTypeDef gitd;
+  HAL_GPIO_DeInit(GPIOC, GPIO_PIN_15);
+  
+  gitd.Mode = GPIO_MODE_OUTPUT_PP;
+  gitd.Pin = GPIO_PIN_15|GPIO_PIN_14;
+  gitd.Pull = GPIO_NOPULL;
+  gitd.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &gitd);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_15, GPIO_PIN_SET);
+
   SETUP_LOG("setup() completed.");
 
   TERN_(MARLIN_TEST_BUILD, runStartupTests());

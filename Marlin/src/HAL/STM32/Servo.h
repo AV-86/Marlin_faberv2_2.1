@@ -31,7 +31,7 @@ class libServo {
     libServo();
     int8_t attach(const int pin = 0); // pin == 0 uses value from previous call
     int8_t attach(const int pin, const int min, const int max);
-    void detach() { stm32_servo.detach(); }
+    void detach() { stm32_servo.detach(); HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, GPIO_PIN_RESET);}
     int read() { return stm32_servo.read(); }
     void move(const int value);
 
